@@ -1,1 +1,5 @@
 
+1. The alternate query to find the number of columns.
+SELECT COUNT(*) AS anyName FROM INFORMATION_SCHEMA.COLUMNS
+WHERE table_schema = 'yourDatabaseName' AND table_name = 'yourTableName';
+
