@@ -1,5 +1,8 @@
 
 1. The alternate query to find the number of columns.
+
+source link  = https://www.tutorialspoint.com/how-to-find-the-number-of-columns-in-a-mysql-table#:~:text=name%20'business'.-,mysql%3E%20SELECT%20COUNT(*)%20AS%20NUMBEROFCOLUMNS%20FROM%20INFORMATION_SCHEMA.,displays%20the%20number%20of%20columns.
+
 SELECT COUNT(*) AS anyName FROM INFORMATION_SCHEMA.COLUMNS
 WHERE table_schema = 'yourDatabaseName' AND table_name = 'yourTableName';
 
