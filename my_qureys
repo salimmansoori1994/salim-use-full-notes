@@ -6,3 +6,20 @@ source link  = https://www.tutorialspoint.com/how-to-find-the-number-of-columns-
 SELECT COUNT(*) AS anyName FROM INFORMATION_SCHEMA.COLUMNS
 WHERE table_schema = 'yourDatabaseName' AND table_name = 'yourTableName';
 
+2. doublicate row delete
+
+DELETE FROM [TIL_IKONNECT].[dbo].[County_City_Locations]
+    WHERE [Sno] NOT IN
+    (
+        SELECT MAX([Sno]) AS MaxRecordID
+        FROM [TIL_IKONNECT].[dbo].[County_City_Locations]
+        GROUP BY [Location]
+    );
+
+3. havin in group by
+
+  SELECT COUNT([Location]),[Location]
+FROM  [TIL_IKONNECT].[dbo].[County_City_Locations]
+GROUP BY [Location]
+HAVING COUNT([Location]) > 1
+ORDER BY COUNT([Location]) DESC;
