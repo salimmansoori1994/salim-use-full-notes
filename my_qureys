@@ -23,3 +23,6 @@ FROM  [TIL_IKONNECT].[dbo].[County_City_Locations]
 GROUP BY [Location]
 HAVING COUNT([Location]) > 1
 ORDER BY COUNT([Location]) DESC;
+
+4. datatype change in sql
+ALTER TABLE faq_attachments ALTER COLUMN [attached_by] nvarchar(MAX)
