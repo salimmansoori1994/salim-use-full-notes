@@ -26,3 +26,16 @@ ORDER BY COUNT([Location]) DESC;
 
 4. datatype change in sql
 ALTER TABLE faq_attachments ALTER COLUMN [attached_by] nvarchar(MAX)
+
+5. every singl accend by team for tata work
+select  tm.ticket_number,tm.problem,tm.status,DATEADD(SECOND,CAST( tm.created_date as bigint),'1970-01-01 00:00') as creation_date from ticket as tm 
+where tm.ticket_number in (
+select  th.ticket_number from ticket_history  as th where assigned_by='MSPL') order by tm.created_date desc
+
+6.total ticket count for team wise for tata work
+select  CONVERT(NVARCHAR(6),a.creation_date,112) as mnth, count(*) from  (
+select  tm.ticket_number,tm.problem,tm.status,DATEADD(SECOND,CAST( tm.created_date as bigint),'1970-01-01 00:00') as creation_date from ticket as tm 
+where tm.ticket_number in (
+select  th.ticket_number from ticket_history  as th where assigned_by like '%mspl%') ) as a 
+group by CONVERT(NVARCHAR(6),a.creation_date,112)
+order by mnth DESC
