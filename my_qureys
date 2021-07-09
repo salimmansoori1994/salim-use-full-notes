@@ -6,6 +6,9 @@ source link  = https://www.tutorialspoint.com/how-to-find-the-number-of-columns-
 SELECT COUNT(*) AS anyName FROM INFORMATION_SCHEMA.COLUMNS
 WHERE table_schema = 'yourDatabaseName' AND table_name = 'yourTableName';
 
+
+SELECT COUNT(*),TABLE_NAME  FROM INFORMATION_SCHEMA.COLUMNS group by TABLE_NAME
+
 2. doublicate row delete
 
 DELETE FROM [TIL_IKONNECT].[dbo].[County_City_Locations]
