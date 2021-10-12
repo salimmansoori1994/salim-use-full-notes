@@ -1,0 +1,13 @@
+Power shell command to create a cron job in task manager
+
+Way 1 :-
+
+powershell.exe
+
+-command "(new-object system.net.webclient).downloadstring('https://tilcommtest1.tatainternational.com/salim/IT-support_test/Support_api/read_mail')"
+
+Way 2 :-
+
+"C:\Program Files\iis express\PHP\v7.2\php.exe"
+
+C:\inetpub\wwwroot\salim\IT-support_test\index.php Support_api read_mail
