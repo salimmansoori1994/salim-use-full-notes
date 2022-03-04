@@ -11,3 +11,10 @@ Way 2 :-
 "C:\Program Files\iis express\PHP\v7.2\php.exe"
 
 C:\inetpub\wwwroot\salim\IT-support_test\index.php Support_api read_mail
+
+
+
+cronjob in codeigniter using cpanel
+link - https://stackoverflow.com/questions/19199250/cronjob-in-codeigniter-using-cpanel
+
+curl --silent http://www.mysite.com/admin/sendDailyEmail
