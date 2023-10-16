@@ -44,3 +44,9 @@ where tm.ticket_number in (
 select  th.ticket_number from ticket_history  as th where assigned_by like '%mspl%') ) as a 
 group by CONVERT(NVARCHAR(6),a.creation_date,112)
 order by mnth DESC
+
+7.SELECT COUNT(phone),phone
+FROM `users`
+GROUP BY phone
+HAVING COUNT(phone) > 1
+ORDER BY COUNT(phone) DESC;
