@@ -1,0 +1,31 @@
+
+	if ($_FILES['bank_Cheque']['name']!= "")
+		{
+		$_POST['bank_Cheque'] =  $this->upload_the_images($_FILES,'bank_Cheque');
+		}
+
+  function upload_the_images($data,$name){
+		$_FILES = $data;
+		if ($_FILES[$name]['name']!= "")
+		{
+		 $file_element_name = $name;
+		   $config['upload_path'] = 'uploads/docter';
+		   $config['allowed_types'] = 'gif|jpg|jpeg|png|exe|xls|doc|docx|xlsx|rar|zip';
+		   $config['max_size']      = '8192'; 
+		   $config['remove_spaces']=TRUE;  //it will remove all spaces
+		   $config['encrypt_name']=TRUE;   //it wil encrypte the original file name
+		   $this->load->library('upload', $config);
+	 
+		   if (!$this->upload->do_upload($file_element_name))
+		   {
+			  $error = array('error' => $this->upload->display_errors());
+			 echo "<pre>"; print_r($error)   ;
+		   }
+		   else
+		   {
+			  $data = $this->upload->data();
+			  return $data['file_name'];          
+		   }
+	 
+		}
+	   }
