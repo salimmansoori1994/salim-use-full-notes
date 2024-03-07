@@ -1,0 +1,5 @@
+echo '
+  <a onclick="docter_case_type_Amounts('.$row->id.',\''.$row->doctor_code.'\')" >
+
+<button class="btn btn-primary btn-sm tooltips bnt_pending btnEdit" data-toggle="tooltip" data-placement="left" title="" aria-describedby="ui-tooltip-3"> Update Case Type Amount </button>
+</a>;
