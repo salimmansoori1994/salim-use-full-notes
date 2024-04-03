@@ -1,0 +1,28 @@
+<?php
+function generateCombinations($arrays, $index = 0, $current = array(), &$result = array()) {
+    if ($index == count($arrays)) {
+        $result[] = $current;
+        return;
+    }
+
+    foreach ($arrays[$index] as $value) {
+        $new = $current;
+        $new[] = $value;
+        generateCombinations($arrays, $index + 1, $new, $result);
+    }
+}
+
+$array1 = array("A1", "A2");
+$array2 = array("B1", "B2");
+$array3 = array("C1", "C2");
+$array4 = array("D1", "D2");
+
+$allArrays = array($array1, $array2, $array3 , $array4);
+$result = array();
+
+generateCombinations($allArrays, 0, array(), $result);
+
+foreach ($result as $combination) {
+    echo implode(' ', $combination) . "<br>";
+}
+?>
