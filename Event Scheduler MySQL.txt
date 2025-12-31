@@ -20,6 +20,16 @@ DO
   DELETE FROM logs WHERE log_date < NOW() - INTERVAL 30 DAY;
 
 =============================
+CREATE EVENT daily_cleanup_b_sales 
+ON SCHEDULE EVERY 1 DAY
+STARTS (TIMESTAMP(CURRENT_DATE) + INTERVAL 1 DAY) -- Kal se shuru hoga
+DO
+DELETE t1, t2
+FROM b_sales t1
+INNER JOIN b_sales_info t2 ON t1.id = t2.customer_bills_id
+ WHERE t1.creationDate < DATE_SUB(NOW(), INTERVAL 15 DAY);
+
+=============================
 
 Saare events dekhne ke liye:
 SHOW EVENTS;
