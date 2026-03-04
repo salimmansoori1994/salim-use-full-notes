@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSM Nominatim Search Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
+        .search-container { position: relative; width: 400px; margin: auto; }
+        input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .suggestions { 
+            position: absolute; width: 100%; background: white; 
+            border: 1px solid #ccc; border-top: none; z-index: 1000; 
+            max-height: 200px; overflow-y: auto; display: none;
+        }
+        .suggestion-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; font-size: 14px; }
+        .suggestion-item:hover { background-color: #f0f0f0; }
+        .result-box { margin-top: 20px; background: #fff; padding: 15px; border-radius: 4px; border: 1px solid #ddd; display: none; }
+        h3 { color: #333; }
+        pre { background: #eee; padding: 10px; font-size: 12px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+<div class="search-container">
+    <h2>शहर/एड्रेस सर्च करें</h2>
+    <input type="text" id="addressInput" placeholder="Type city or address (e.g. Indore)..." autocomplete="off">
+    <div id="suggestionBox" class="suggestions"></div>
+</div>
+
+<div id="resultBox" class="result-box">
+    <h3>चयनित डेटा (Selected Data):</h3>
+    <p><strong>City:</strong> <span id="resCity">-</span></p>
+    <p><strong>State:</strong> <span id="resState">-</span></p>
+    <p><strong>Country:</strong> <span id="resCountry">-</span></p>
+    <p><strong>Full Address:</strong> <span id="resFull">-</span></p>
+    <hr>
+    <p>Raw JSON (API Response):</p>
+    <pre id="rawJson"></pre>
+</div>
+
+<script>
+    const addressInput = document.getElementById('addressInput');
+    const suggestionBox = document.getElementById('suggestionBox');
+    const resultBox = document.getElementById('resultBox');
+
+    let timeout = null;
+
+    // इनपुट पर टाइप करते समय सर्च करें
+    addressInput.addEventListener('input', function() {
+        const query = this.value;
+
+        clearTimeout(timeout);
+        if (query.length < 3) {
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        // API को बार-बार कॉल होने से बचाने के लिए Debouncing
+        timeout = setTimeout(() => {
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&addressdetails=1&limit=5`)
+                .then(response => response.json())
+                .then(data => {
+                    displaySuggestions(data);
+                })
+                .catch(err => console.error("Error fetching data:", err));
+        }, 500);
+    });
+
+    function displaySuggestions(data) {
+        suggestionBox.innerHTML = '';
+        if (data.length === 0) {
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        data.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'suggestion-item';
+            div.innerText = item.display_name;
+            div.onclick = () => selectAddress(item);
+            suggestionBox.appendChild(div);
+        });
+        suggestionBox.style.display = 'block';
+    }
+
+    function selectAddress(item) {
+        const addr = item.address;
+        
+        // फॉर्म फील्ड्स में डेटा भरें
+        document.getElementById('resCity').innerText = addr.city || addr.town || addr.village || addr.suburb || 'N/A';
+        document.getElementById('resState').innerText = addr.state || 'N/A';
+        document.getElementById('resCountry').innerText = addr.country || 'N/A';
+        document.getElementById('resFull').innerText = item.display_name;
+        document.getElementById('rawJson').innerText = JSON.stringify(item, null, 2);
+
+        // UI अपडेट करें
+        addressInput.value = item.display_name;
+        suggestionBox.style.display = 'none';
+        resultBox.style.display = 'block';
+    }
+
+    // बाहर क्लिक करने पर सजेशन बॉक्स बंद करें
+    document.addEventListener('click', (e) => {
+        if (e.target !== addressInput) suggestionBox.style.display = 'none';
+    });
+</script>
+
+</body>
+</html>
