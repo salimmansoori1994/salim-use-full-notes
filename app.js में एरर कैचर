@@ -1,0 +1,17 @@
+अब app.js पर राइट-क्लिक करके Edit पर क्लिक करें.
+
+आपकी फ़ाइल में जहाँ से भी कोड शुरू हो रहा है, सबसे ऊपर (पहली लाइन पर) यह कोड पेस्ट कर दें:
+
+// यह कोड किसी भी अनहैंडल्ड एरर को पकड़कर स्क्रीन पर दिखा देगा
+process.on('uncaughtException', (err) => {
+    const fs = require('fs');
+    // स्क्रीन पर एरर दिखाने के लिए एक अस्थायी सर्वर तुरंत चालू कर देगा
+    const http = require('http');
+    const server = http.createServer((req, res) => {
+        res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end("Node.js Crash Error Detected:\n\n" + err.stack);
+    });
+    server.listen(process.env.PORT || 3000, () => {
+        console.error("Crashing error caught, served error page.");
+    });
+});
